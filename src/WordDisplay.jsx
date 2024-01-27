@@ -172,12 +172,17 @@ const WordDisplay = () => {
     let feedbackText = [];
     for (let i = 0; i < hiddenWord.length; i++) {
       let status = "";
+
       if (currentGuess[i].toLowerCase() === hiddenWord[i].toLowerCase()) {
         status = "correct";
-      } else if (hiddenWord.includes(currentGuess[i])) {
-        status = "incorrect_position";
       } else {
-        status = "incorrect";
+        const isLetterInWord = hiddenWord.toLowerCase().includes(currentGuess[i].toLowerCase());
+
+        if (isLetterInWord) {
+          status = "incorrect_position";
+        } else {
+          status = "incorrect";
+        }
       }
 
       feedbackText.push({ letter: currentGuess[i], status });
@@ -254,6 +259,7 @@ const WordDisplay = () => {
     <div className="word-display">
       <Badge.Ribbon text={`Attempts: ${attempts}/5 `} color="green">
         <Card title="Football Wordle" size="small">
+          Your word is {hiddenWord}
           {renderFeedback()}
           <Flex gap={10} align="center" justify="center">
             {renderInputs()}
