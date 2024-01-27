@@ -257,7 +257,6 @@ const WordDisplay = () => {
     <div className="word-display">
       <Badge.Ribbon text={`Attempts: ${attempts}/5 `} color="green">
         <Card title="Football Wordle" size="small">
-          Your word is {hiddenWord}
           {renderFeedback()}
           <Flex gap={10} align="center" justify="center">
             {renderInputs()}
