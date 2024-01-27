@@ -253,8 +253,6 @@ const WordDisplay = () => {
     return feedback.map((feedbackLine, index) => <FeedbackLine key={index} feedbackLine={feedbackLine} />);
   };
 
-  console.log({ guess });
-
   return (
     <div className="word-display">
       <Badge.Ribbon text={`Attempts: ${attempts}/5 `} color="green">
