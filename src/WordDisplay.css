@@ -77,6 +77,7 @@ input:active {
   width: 100%;
   border-radius: 50px;
   font-family: "Poor Story", system-ui;
+  padding: 0 20%;
 }
 
 .ant-card-head-title {
@@ -92,7 +93,8 @@ input:active {
 }
 
 .ant-ribbon-wrapper {
-  width: 80%;
+  width: 100%;
+  min-width: 400px;
 }
 
 .ant-card-body {
