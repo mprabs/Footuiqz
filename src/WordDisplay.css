@@ -4,6 +4,10 @@
   margin-bottom: 10px;
 }
 
+* {
+  font-family: "Poor Story", system-ui !important;
+}
+
 .feedback-box,
 .guess-box {
   width: 50px;
@@ -27,7 +31,6 @@
 
 .feedback-box span {
   font-size: 20px;
-  font-family: "Poor Story", system-ui;
 }
 
 .green {
@@ -64,7 +67,6 @@ input:active {
   box-shadow: none !important;
   text-transform: uppercase;
   font-size: 20px;
-  font-family: "Poor Story", system-ui;
 }
 
 .word-display {
@@ -73,17 +75,28 @@ input:active {
   justify-content: center;
   flex-direction: column;
   background: linear-gradient(135deg, rgb(11, 66, 11), rgb(0, 0, 0));
-  height: 80vh;
-  width: 100%;
+  min-height: 80vh;
+  min-width: 400px;
   border-radius: 50px;
-  font-family: "Poor Story", system-ui;
-  padding: 0 20%;
+  padding: 2rem;
+}
+
+@media screen and (max-width: 600px) {
+  .word-display {
+    min-width: 100vw;
+    min-height: 100vh;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .ant-card {
+    border-radius: 0;
+  }
 }
 
 .ant-card-head-title {
   font-weight: bold;
   font-size: 40px;
-  font-family: "Poor Story", system-ui;
   padding-left: 20px;
   color: #5cb85c;
 }
@@ -95,6 +108,7 @@ input:active {
 .ant-ribbon-wrapper {
   width: 100%;
   min-width: 400px;
+  max-width: 100vw;
 }
 
 .ant-card-body {
@@ -102,7 +116,86 @@ input:active {
 }
 
 .ant-ribbon {
-  font-family: "Poor Story", system-ui;
   font-size: 20px;
   padding: 5px 10px;
+}
+
+.show-hint-button {
+  font-size: 16px;
+  outline: 1px solid #5cb85c;
+  color: #5cb85c;
+  transition: all 0.2s ease-in-out;
+}
+
+.show-hint-button:hover {
+  outline-color: #000;
+}
+
+.hint-data-item {
+  font-weight: bold;
+  font-size: 20px;
+  width: inherit;
+}
+
+.hint-data-item strong {
+  font-size: 18px;
+}
+
+.hint-data-item > span:nth-child(3) {
+  color: #5cb85c;
+}
+
+.ant-alert-message {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.hint-data-item > span > span:not(:last-child)::after {
+  content: ", ";
+}
+
+.ant-modal-confirm-title {
+  font-size: 24px !important;
+}
+
+.ant-modal-confirm-content {
+  font-size: 18px !important;
+}
+
+.ant-modal-confirm-body .anticon {
+  font-size: 28px !important;
+}
+
+.ant-modal-confirm {
+  max-width: 100vw;
+  min-width: 300px;
+  width: auto;
+}
+
+.wordle-game-container {
+  width: 100%;
+}
+
+.ant-collapse-header-text,
+.ant-collapse-expand-icon {
+  color: #5cb85c;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.ant-collapse-arrow {
+  font-size: 18px !important;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.ant-collapse,
+.ant-collapse-item,
+.ant-collapse-header {
+  border-color: #5cb85c !important;
+  background: transparent !important;
+}
+
+.ant-collapse-content {
+  border-color: #5cb85c !important;
 }

@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Row, Col, Input, Modal, Flex, Divider, Card, Badge } from "antd";
+import React, { useState, useEffect, useMemo } from "react";
+import { Typography, Modal, Flex, Card, Badge, Button, Alert, ColorPicker, Collapse } from "antd";
+import { TeamOutlined, GlobalOutlined, ScheduleOutlined, TrophyOutlined, BulbOutlined } from "@ant-design/icons";
+
+const { Title, Text } = Typography;
 import "./WordDisplay.css"; // Import custom CSS for WordDisplay styling
 
-const { Text } = Typography;
+import footballPlayersJSON from "./playersData.json";
 
 const colorClass = (status) => {
   switch (status) {
@@ -17,97 +20,6 @@ const colorClass = (status) => {
   }
 };
 
-const footballers = [
-  "Messi",
-  "Ronaldo",
-  "Neymar",
-  "Mbappe",
-  "Haaland",
-  "Lewandowski",
-  "DeBruyne",
-  "Kante",
-  "Salah",
-  "Kane",
-  "Son",
-  "Fernandes",
-  "Ramos",
-  "Varane",
-  "VanDijk",
-  "Alisson",
-  "TerStegen",
-  "DeJong",
-  "Henderson",
-  "Laporte",
-  "Gundogan",
-  "Foden",
-  "Sterling",
-  "Sancho",
-  "Rashford",
-  "Bellingham",
-  "Mount",
-  "Kimmich",
-  "Sane",
-  "Muller",
-  "Gnabry",
-  "Havertz",
-  "Coman",
-  "Lewandowski",
-  "Alaba",
-  "Neuer",
-  "Lloris",
-  "Kimpembe",
-  "Pogba",
-  "Kante",
-  "Griezmann",
-  "Dembele",
-  "Zouma",
-  "Chilwell",
-  "Rice",
-  "Maguire",
-  "Shaw",
-  "Pickford",
-  "Benzema",
-  "Modric",
-  "Kroos",
-  "Casemiro",
-  "Valverde",
-  "Courtois",
-  "Carvajal",
-  "Marcelo",
-  "Mendy",
-  "Casemiro",
-  "Bale",
-  "Isco",
-  "Vinicius",
-  "Asensio",
-  "Jovic",
-  "Firmino",
-  "Alisson",
-  "Thiago",
-  "Fabinho",
-  "DiogoJota",
-  "AlexanderArnold",
-  "Robertson",
-  "Maguire",
-  "Shaw",
-  "Rashford",
-  "Lingard",
-  "Greenwood",
-  "Sancho",
-  "Pogba",
-  "McTominay",
-  "Fred",
-  "BrunoFernandes",
-  "DeGea",
-  "Cavani",
-  "Llorente",
-  "Correa",
-  "Koke",
-  "Saul",
-  "Suarez",
-  "Oblak",
-];
-
 const FeedbackLine = ({ feedbackLine }) => {
   return (
     <Flex align="center" justify="center" gap="10px" className="feedback-line">
@@ -120,19 +32,32 @@ const FeedbackLine = ({ feedbackLine }) => {
   );
 };
 
+const maxAttempts = 6;
+
 const WordDisplay = () => {
-  const [hiddenWord, setHiddenWord] = useState(footballers[Math.floor(Math.random() * footballers.length)]);
+  const [hiddenWord, setHiddenWord] = useState(footballPlayersJSON[Math.floor(Math.random() * footballPlayersJSON.length)]);
   const [attempts, setAttempts] = useState(0);
   const [feedback, setFeedback] = useState([]);
   const [inputs, setInputs] = useState(Array(hiddenWord.length).fill(""));
   const [guess, setGuess] = useState("");
   const [isCongratulationsVisible, setIsCongratulationsVisible] = useState(false);
+  const [isHintVisible, setIsHintVisible] = useState(false);
+
+  const mainWord = useMemo(() => {
+    try {
+      const name = hiddenWord.name;
+      const nameArray = name.split(" ");
+      return nameArray[0];
+    } catch (error) {
+      return "";
+    }
+  }, [hiddenWord]);
 
   useEffect(() => {
-    if (attempts >= 5) {
+    if (attempts >= maxAttempts) {
       Modal.error({
         title: "Sorry! You've run out of attempts.",
-        content: `The correct word was "${hiddenWord}".`,
+        content: `The correct word was "${mainWord}".`,
         onOk: resetGame,
         centered: true,
       });
@@ -147,7 +72,7 @@ const WordDisplay = () => {
     if (isCongratulationsVisible) {
       Modal.success({
         title: "Congratulations!",
-        content: `You guessed the word "${hiddenWord}" in ${attempts + 1} attempts.`,
+        content: `You guessed the word "${mainWord}" in ${attempts + 1} attempts.`,
         onOk: resetGame,
         centered: true,
       });
@@ -155,10 +80,18 @@ const WordDisplay = () => {
   }, [isCongratulationsVisible, attempts, hiddenWord]);
 
   const handleGuess = () => {
-    if (guess.toLowerCase() === hiddenWord.toLowerCase()) {
+    if (guess.toLowerCase() === mainWord.toLowerCase()) {
       setIsCongratulationsVisible(true);
-    } else if (guess.length < hiddenWord.length) {
+    } else if (guess.length < mainWord.length) {
       return;
+    } else if (!checkPlayerInJSON()) {
+      Modal.error({
+        title: "Invalid Player",
+        content: "The player you entered is not in the list. Please enter a valid player.",
+        onOk: resetInput,
+        centered: true,
+      });
+      resetInput();
     } else {
       setGuess("");
       setAttempts(attempts + 1);
@@ -168,15 +101,28 @@ const WordDisplay = () => {
     }
   };
 
+  const checkPlayerInJSON = () => {
+    const playerName = guess.toLowerCase();
+
+    const isPlayerinJSON = footballPlayersJSON.some((player) => {
+      if (player.name.toLowerCase().includes(playerName)) {
+        return true;
+      }
+      return false;
+    });
+
+    return isPlayerinJSON;
+  };
+
   const generateFeedback = (currentGuess) => {
     let feedbackText = [];
-    for (let i = 0; i < hiddenWord.length; i++) {
+    for (let i = 0; i < mainWord.length; i++) {
       let status = "";
 
-      if (currentGuess[i].toLowerCase() === hiddenWord[i].toLowerCase()) {
+      if (currentGuess[i].toLowerCase() === mainWord[i].toLowerCase()) {
         status = "correct";
       } else {
-        const isLetterInWord = hiddenWord.toLowerCase().includes(currentGuess[i].toLowerCase());
+        const isLetterInWord = mainWord.toLowerCase().includes(currentGuess[i].toLowerCase());
 
         if (isLetterInWord) {
           status = "incorrect_position";
@@ -200,14 +146,14 @@ const WordDisplay = () => {
   };
 
   const resetInput = () => {
-    setInputs(Array(hiddenWord.length).fill(""));
+    setInputs(Array(mainWord.length).fill(""));
     const input = document.getElementById(`input-0`);
     input.focus();
   };
 
   const generateRandomWord = () => {
-    const randomIndex = Math.floor(Math.random() * footballers.length);
-    return footballers[randomIndex];
+    const randomIndex = Math.floor(Math.random() * footballPlayersJSON.length);
+    return footballPlayersJSON[randomIndex];
   };
 
   const handleInputChange = (index, value, e) => {
@@ -216,7 +162,7 @@ const WordDisplay = () => {
     setInputs(newInputs);
     setGuess(newInputs.join(""));
 
-    if (index < hiddenWord.length - 1 && value !== "") {
+    if (index < mainWord.length - 1 && value !== "") {
       const nextInput = document.getElementById(`input-${index + 1}`);
       nextInput.focus();
     }
@@ -231,6 +177,30 @@ const WordDisplay = () => {
     if (e.keyCode === 13) {
       handleGuess();
     }
+  };
+
+  const showHint = () => {
+    Modal.confirm({
+      title: "Confirm Show Hint ?",
+      // showing hint will decrease the attempt by 1
+      content: "Showing a hint will decrease your remaining attempts by 1.",
+      onOk: handleShowHint,
+      centered: true,
+    });
+  };
+
+  const handleShowHint = () => {
+    if (attempts + 1 === maxAttempts) {
+      Modal.error({
+        title: "Sorry! You've run out of attempts.",
+        content: `The correct word was "${mainWord}".`,
+        onOk: resetGame,
+        centered: true,
+      });
+      return;
+    }
+    setAttempts(attempts + 1);
+    setIsHintVisible(true);
   };
 
   const renderInputs = () => {
@@ -253,17 +223,131 @@ const WordDisplay = () => {
     return feedback.map((feedbackLine, index) => <FeedbackLine key={index} feedbackLine={feedbackLine} />);
   };
 
+  console.log({ hiddenWord, mainWord });
+
   return (
     <div className="word-display">
-      <Badge.Ribbon text={`Attempts: ${attempts}/5 `} color="green">
-        <Card title="Football Wordle" size="small">
+      <Badge.Ribbon text={`Attempts: ${attempts}/${maxAttempts} `} color="green">
+        <Card title="Footuiqz" size="small">
           {renderFeedback()}
           <Flex gap={10} align="center" justify="center">
             {renderInputs()}
           </Flex>
+          {!isHintVisible && (
+            <Flex align="center" justify="center" style={{ marginTop: "40px" }}>
+              <Button onClick={showHint} className="show-hint-button" icon={<BulbOutlined />} type="text">
+                Show Hint
+              </Button>
+            </Flex>
+          )}
         </Card>
       </Badge.Ribbon>
+
+      {isHintVisible && <PlayerHint player={hiddenWord} />}
     </div>
+  );
+};
+
+const PlayerHint = ({ player = {} }) => {
+  const parseArray = (arrayString) => {
+    try {
+      // Try parsing as JSON
+      const parsedArray = JSON.parse(arrayString.replace(/'/g, '"'));
+
+      // Check if the parsed result is an array
+      if (Array.isArray(parsedArray)) {
+        return parsedArray;
+      }
+
+      // If not an array, treat it as a string array
+      return arrayString.split(",").map((item) => item.trim().replace(/'/g, ""));
+    } catch (error) {
+      // If parsing as JSON fails, try alternative method
+      console.error("Error parsing array string:", error);
+      return arrayString.split(",").map((item) => item.trim().replace(/'/g, ""));
+    }
+  };
+
+  const clubsArray = parseArray(player.clubs);
+  const seasonsArray = parseArray(player.seasons);
+
+  return (
+    <Card style={{ width: "100%", marginTop: "20px" }} title="Hint" size="small">
+      <Collapse
+        size="large"
+        style={{ maxWidth: "600px" }}
+        defaultActiveKey={["1"]}
+        items={[
+          {
+            key: "1",
+            label: "Player Data",
+            children: (
+              <Flex vertical gap={10} style={{ maxWidth: "100%" }}>
+                <Text className="hint-data-item">
+                  <TeamOutlined /> <Typography.Text strong>Position:</Typography.Text>
+                  <span> {player.position}</span>
+                </Text>
+                <Text className="hint-data-item">
+                  <GlobalOutlined /> <Typography.Text strong>Nationality:</Typography.Text>
+                  <span> {player.nationality}</span>
+                </Text>
+                {Array.isArray(clubsArray) && (
+                  <Text className="hint-data-item">
+                    <TeamOutlined /> <Typography.Text strong>Clubs: </Typography.Text>
+                    <span>
+                      {clubsArray.map((club, index) => (
+                        <span key={index}>{club}</span>
+                      ))}
+                    </span>
+                  </Text>
+                )}
+
+                {Array.isArray(seasonsArray) && (
+                  <Text className="hint-data-item">
+                    <TeamOutlined /> <Typography.Text strong>Seasons: </Typography.Text>
+                    <span>
+                      {seasonsArray.map((season, index) => (
+                        <span key={index}>{season}</span>
+                      ))}
+                    </span>
+                  </Text>
+                )}
+
+                <Text className="hint-data-item">
+                  <ScheduleOutlined /> <Typography.Text strong>Number of Seasons:</Typography.Text>
+                  <span> {player.num_of_seasons}</span>
+                </Text>
+                <Text className="hint-data-item">
+                  <TrophyOutlined /> <Typography.Text strong>Apps:</Typography.Text>
+                  <span> {player.apps}</span>
+                </Text>
+                <Text className="hint-data-item">
+                  <TrophyOutlined /> <Typography.Text strong>Wins:</Typography.Text>
+                  <span> {player.wins}</span>
+                </Text>
+                <Text className="hint-data-item">
+                  <TrophyOutlined /> <Typography.Text strong>Losses:</Typography.Text>
+                  <span> {player.losses}</span>
+                </Text>
+                <Text className="hint-data-item">
+                  <TrophyOutlined /> <Typography.Text strong>Clean Sheets:</Typography.Text>
+                  <span> {player.clean_sheets}</span>
+                </Text>
+                <Text className="hint-data-item">
+                  <TrophyOutlined /> <Typography.Text strong>Assists:</Typography.Text>
+                  <span> {player.assists}</span>
+                </Text>
+                <Text className="hint-data-item">
+                  <TrophyOutlined /> <Typography.Text strong>Goals:</Typography.Text>
+                  <span> {player.goals}</span>
+                </Text>
+              </Flex>
+            ),
+          },
+        ]}
+      />
+      <Alert message="Your remaining attempts have been reduced by 1." type="success" style={{ marginTop: "20px", textAlign: "center" }} />
+    </Card>
   );
 };
 

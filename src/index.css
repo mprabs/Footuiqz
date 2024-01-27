@@ -7,7 +7,7 @@ body {
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background: #f0f0f0;
   font-family: "Poor Story", system-ui;
   font-family: "Roboto", sans-serif;
