@@ -143,6 +143,7 @@ const WordDisplay = () => {
     setAttempts(0);
     setFeedback([]);
     setIsCongratulationsVisible(false);
+    setIsHintVisible(false);
   };
 
   const resetInput = () => {
