@@ -1,0 +1,5 @@
+.input-container {
+  padding: 0 2rem;
+  display: flex;
+  flex-wrap: nowrap;
+}

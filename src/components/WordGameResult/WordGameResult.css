@@ -1,0 +1,58 @@
+.ant-result-icon {
+  font-size: 40px;
+  text-align: right !important;
+}
+
+.result-word {
+  font-size: 20px;
+  font-weight: bold;
+  background: #008100;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 50px;
+  text-transform: uppercase;
+}
+
+.loser .result-word {
+  background: #ff0000;
+}
+
+.result-container {
+  color: fff;
+  padding: 2rem;
+  clip-path: ellipse(100% 97% at 100% 97%);
+}
+
+.winner {
+  background: linear-gradient(120deg, #61ff81, #ffffff);
+}
+
+.loser {
+  background: linear-gradient(120deg, #ff0000, #ffffff);
+}
+
+.play-again {
+  background: #154315;
+  color: #fff;
+  margin-left: auto;
+  margin-right: 4rem;
+}
+
+.loser .play-again {
+  background: #ff0000;
+}
+
+.result-container .ant-result-extra {
+  width: 100%;
+  text-align: right !important;
+}
+
+.result-messaage {
+  color: #154315;
+  text-align: right;
+}
+
+.result-container .ant-typography {
+  text-align: right;
+  font-size: 16px;
+}

@@ -1,0 +1,56 @@
+.word-game-hint .ant-modal-title {
+  font-size: 25px;
+  color: #5cb85c;
+  padding-bottom: 1cqh;
+}
+
+.word-game-hint .ant-modal-header {
+  border-bottom: 1px solid #5cb85c2a;
+}
+
+.ant-collapse-header-text,
+.ant-collapse-expand-icon {
+  color: #5cb85c;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.ant-collapse-arrow {
+  font-size: 18px !important;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.ant-collapse,
+.ant-collapse-item,
+.ant-collapse-header {
+  border-color: #5cb85c !important;
+  background: transparent !important;
+}
+
+.ant-collapse-content {
+  border-color: #5cb85c !important;
+}
+
+.hint-data-item {
+  font-weight: bold;
+  font-size: 20px;
+  width: inherit;
+}
+
+.hint-data-item strong {
+  font-size: 18px;
+}
+
+.hint-data-item > span:nth-child(3) {
+  color: #5cb85c;
+}
+
+.ant-alert-message {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.hint-data-item > span > span:not(:last-child)::after {
+  content: ", ";
+}

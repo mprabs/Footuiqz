@@ -1,0 +1,61 @@
+.ant-card-head-title {
+  font-weight: bold;
+  font-size: 40px;
+  padding-left: 20px;
+  color: #5cb85c;
+}
+
+.ant-card-head {
+  height: 80px;
+}
+
+.ant-ribbon-wrapper {
+  width: 100%;
+  min-width: 400px;
+  max-width: 100vw;
+}
+
+.ant-card-body {
+  padding: 0 !important;
+  padding-top: 2rem !important;
+  background: #e2e2e2;
+}
+
+.ant-ribbon {
+  font-size: 20px;
+  padding: 5px 10px;
+}
+
+.show-hint-button {
+  font-size: 16px;
+  outline: 2px solid #5cb85c;
+  color: #5cb85c;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.show-hint-button:hover {
+  outline-color: #000;
+}
+
+.ant-modal-confirm-title {
+  font-size: 24px !important;
+}
+
+.ant-modal-confirm-content {
+  font-size: 18px !important;
+}
+
+.ant-modal-confirm-body .anticon {
+  font-size: 28px !important;
+}
+
+.ant-modal-confirm {
+  max-width: 100vw;
+  min-width: 300px;
+  width: auto;
+}
+
+.wordle-game-container {
+  width: 100%;
+}
