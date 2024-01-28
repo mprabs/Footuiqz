@@ -1,0 +1,23 @@
+.how-to-play-modal .ant-steps-item-active .ant-steps-item-icon {
+  background-color: #5cb85c !important;
+  border-color: #5cb85c !important;
+}
+
+.how-to-play-modal .ant-steps-item-finish .ant-steps-icon {
+  background-color: #d7ffd7 !important;
+  border-color: #d7ffd7 !important;
+  color: #5cb85c !important;
+}
+
+.how-to-play-modal .ant-steps-item-tail::after {
+  background-color: #5cb85c !important;
+}
+
+.how-to-play-modal .ant-card {
+  background: #f4f5fa;
+}
+
+.how-to-play-modal .ant-modal-header .ant-modal-title {
+  font-size: 24px;
+  color: #5cb85c;
+}

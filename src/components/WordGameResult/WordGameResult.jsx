@@ -6,6 +6,12 @@ const { Text, Title } = Typography;
 import "./WordGameResult.css";
 
 const WordGameResult = ({ isWinner = false, hiddenWord, mainWord, attempts, handlePlayAgain }) => {
+  const calculateScore = () => {
+    const totalAttempts = 6; // Assuming a total of 6 attempts
+    const score = (totalAttempts - attempts) * mainWord.length;
+    return score > 0 ? score : 0; // Ensure the score is not negative
+  };
+
   const getResultMessage = () => {
     if (isWinner) {
       return (
@@ -31,6 +37,7 @@ const WordGameResult = ({ isWinner = false, hiddenWord, mainWord, attempts, hand
   };
 
   const resultMessage = getResultMessage();
+  const score = calculateScore();
 
   return (
     <Flex className={isWinner ? "result-container winner" : "result-container loser"} align="center" justify="center" vertical>
@@ -39,8 +46,8 @@ const WordGameResult = ({ isWinner = false, hiddenWord, mainWord, attempts, hand
         status={isWinner ? "success" : "error"}
         title={resultMessage}
         extra={[
-          <Text key={1} className="result-message">
-            The name of the player is <b>{hiddenWord.name}</b>.
+          <Text key={2} className="result-message">
+            Your Score: <b>{score}</b>
           </Text>,
         ]}
       />

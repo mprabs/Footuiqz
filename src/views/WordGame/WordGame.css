@@ -18,7 +18,6 @@
 .ant-card-body {
   padding: 0 !important;
   padding-top: 2rem !important;
-  background: #e2e2e2;
 }
 
 .ant-ribbon {
@@ -58,4 +57,24 @@
 
 .wordle-game-container {
   width: 100%;
+  position: relative;
+}
+
+.game-card .ant-card-body {
+  background: #f5f4fa;
+}
+
+.how-to-play-button {
+  color: #5cb85c !important;
+  border-color: #5cb85c !important;
+  background: transparent;
+}
+
+.how-to-play-button:hover {
+  box-shadow: 0 0 0 1px #5cb85c;
+}
+
+.home-how-to-play {
+  position: absolute;
+  bottom: 2rem;
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Modal, Flex, Card, Badge, Button } from "antd";
-import { BulbOutlined } from "@ant-design/icons";
+import { BulbOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import "./WordGame.css";
 
@@ -9,6 +9,7 @@ import WordGameHint from "../../components/WordGameHint";
 import WordGameDisplay from "../../components/WordGameDisplay";
 import WordGameInput from "../../components/WordGameInput";
 import WordGameResult from "../../components/WordGameResult";
+import WordGameHowToPlay from "../../components/WordGameHowToPlay";
 
 const maxAttempts = 6;
 
@@ -21,6 +22,7 @@ const WordGame = () => {
   const [isCongratulationsVisible, setIsCongratulationsVisible] = useState(false);
   const [isAttemptsFinished, setIsAttemptsFinished] = useState(false);
   const [isHintVisible, setIsHintVisible] = useState(false);
+  const [isHowToPlayModalVisible, setIsHowToPlayModalVisible] = useState(false);
 
   const mainWord = useMemo(() => {
     try {
@@ -190,7 +192,7 @@ const WordGame = () => {
   return (
     <div className="word-display">
       <Badge.Ribbon text={`Attempts: ${attempts}/${maxAttempts} `} color="green">
-        <Card title="Footuiqz" size="small">
+        <Card className="game-card" title="Footuiqz" size="small">
           <WordGameDisplay feedback={feedback} />
 
           {isCongratulationsVisible || isAttemptsFinished ? (
@@ -211,6 +213,16 @@ const WordGame = () => {
           )}
         </Card>
       </Badge.Ribbon>
+
+      {/* how to play */}
+
+      <Flex align="center" justify="center" style={{ margin: "40px 0" }}>
+        <Button onClick={() => setIsHowToPlayModalVisible(true)} className="home-how-to-play how-to-play-button" icon={<QuestionCircleOutlined />} type="text">
+          How to Play ?
+        </Button>
+      </Flex>
+
+      {isHowToPlayModalVisible && <WordGameHowToPlay visible={isHowToPlayModalVisible} onCancel={() => setIsHowToPlayModalVisible(false)} />}
     </div>
   );
 };
